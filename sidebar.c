@@ -561,9 +561,16 @@ draw_divider (int num_rows, int num_cols)
 
 	SETCOLOR(MT_COLOR_DIVIDER);
 
+        int col;
+        if (option (OPTSIDEBARONRIGHT)) {
+          col = 0;
+        } else {
+          col = SidebarWidth - delim_len;
+        }
+
 	int i;
 	for (i = 0; i < num_rows; i++) {
-		mutt_window_move (MuttSidebarWindow, i, SidebarWidth - delim_len);	//RAR 0 for rhs
+		mutt_window_move (MuttSidebarWindow, i, col);
 		addstr (NONULL(SidebarDividerChar));
 	}
 
@@ -647,7 +654,12 @@ draw_sidebar (int num_rows, int num_cols, int div_width)
 			SETCOLOR(MT_COLOR_NORMAL);
 		}
 
-		mutt_window_move (MuttSidebarWindow, row, 0);
+		int col = 0;
+		if (option (OPTSIDEBARONRIGHT)) {
+			col = div_width;
+		}
+
+		mutt_window_move (MuttSidebarWindow, row, col);
 		if (Context && Context->path &&
 			(!strcmp (b->path, Context->path)||
 			 !strcmp (b->realpath, Context->path))) {
